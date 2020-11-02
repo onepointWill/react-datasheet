@@ -663,7 +663,7 @@ export default class DataSheet extends PureComponent {
               key={
                 firstCell
                   ? firstCell.key
-                    ? column[0].key
+                    ? firstCell.key
                     : `${i}-${j}`
                   : `${i}-${j}`
               }
@@ -707,64 +707,65 @@ export default class DataSheet extends PureComponent {
         className="data-grid-container"
         onKeyDown={this.handleKey}
       >
-        <SheetRenderer
-          data={data}
-          className={['data-grid', className, overflow]
-            .filter(a => a)
-            .join(' ')}
-        >
-          <ReactTable
-            data={reactTableData}
-            id="table"
-            pages={this.props.numberOfPages}
-            pageSizeOptions={[5, 10, 20, 25, 50]}
-            columns={reactTableColumns}
-            loading={this.props.isLoading}
-            loadingText={this.props.loadingElem}
-            defaultSorted={this.props.sorts}
-            defaultFiltered={this.props.filters}
-            manual
-            onFetchData={this.props.onFetchData}
-          />
-          {/*{data.map((row, i) => (*/}
-          {/*  <RowRenderer key={keyFn ? keyFn(i) : i} row={i} cells={row}>*/}
-          {/*    {row.map((cell, j) => {*/}
-          {/*      const isEditing = this.isEditing(i, j);*/}
-          {/*      return (*/}
-          {/*        <DataCell*/}
-          {/*          key={cell.key ? cell.key : `${i}-${j}`}*/}
-          {/*          row={i}*/}
-          {/*          col={j}*/}
-          {/*          cell={cell}*/}
-          {/*          forceEdit={false}*/}
-          {/*          onMouseDown={this.onMouseDown}*/}
-          {/*          onMouseOver={this.onMouseOver}*/}
-          {/*          onDoubleClick={this.onDoubleClick}*/}
-          {/*          onContextMenu={this.onContextMenu}*/}
-          {/*          onChange={this.onChange}*/}
-          {/*          onRevert={this.onRevert}*/}
-          {/*          onNavigate={this.handleKeyboardCellMovement}*/}
-          {/*          onKey={this.handleKey}*/}
-          {/*          selected={this.isSelected(i, j)}*/}
-          {/*          editing={isEditing}*/}
-          {/*          clearing={this.isClearing(i, j)}*/}
-          {/*          attributesRenderer={attributesRenderer}*/}
-          {/*          cellRenderer={cellRenderer}*/}
-          {/*          valueRenderer={valueRenderer}*/}
-          {/*          dataRenderer={dataRenderer}*/}
-          {/*          valueViewer={valueViewer}*/}
-          {/*          dataEditor={dataEditor}*/}
-          {/*          {...(isEditing*/}
-          {/*            ? {*/}
-          {/*                forceEdit,*/}
-          {/*              }*/}
-          {/*            : {})}*/}
-          {/*        />*/}
-          {/*      );*/}
-          {/*    })}*/}
-          {/*  </RowRenderer>*/}
-          {/*))}*/}
-        </SheetRenderer>
+        <div>hello</div>
+        <ReactTable
+          data={reactTableData}
+          id="table"
+          pages={this.props.numberOfPages}
+          pageSizeOptions={[5, 10, 20, 25, 50]}
+          columns={reactTableColumns}
+          loading={this.props.isLoading}
+          loadingText={this.props.loadingElem}
+          defaultSorted={this.props.sorts}
+          defaultFiltered={this.props.filters}
+          manual
+          onFetchData={this.props.onFetchData}
+        />
+        {/*<SheetRenderer*/}
+        {/*  data={data}*/}
+        {/*  className={['data-grid', className, overflow]*/}
+        {/*    .filter(a => a)*/}
+        {/*    .join(' ')}*/}
+        {/*>*/}
+        {/*{data.map((row, i) => (*/}
+        {/*  <RowRenderer key={keyFn ? keyFn(i) : i} row={i} cells={row}>*/}
+        {/*    {row.map((cell, j) => {*/}
+        {/*      const isEditing = this.isEditing(i, j);*/}
+        {/*      return (*/}
+        {/*        <DataCell*/}
+        {/*          key={cell.key ? cell.key : `${i}-${j}`}*/}
+        {/*          row={i}*/}
+        {/*          col={j}*/}
+        {/*          cell={cell}*/}
+        {/*          forceEdit={false}*/}
+        {/*          onMouseDown={this.onMouseDown}*/}
+        {/*          onMouseOver={this.onMouseOver}*/}
+        {/*          onDoubleClick={this.onDoubleClick}*/}
+        {/*          onContextMenu={this.onContextMenu}*/}
+        {/*          onChange={this.onChange}*/}
+        {/*          onRevert={this.onRevert}*/}
+        {/*          onNavigate={this.handleKeyboardCellMovement}*/}
+        {/*          onKey={this.handleKey}*/}
+        {/*          selected={this.isSelected(i, j)}*/}
+        {/*          editing={isEditing}*/}
+        {/*          clearing={this.isClearing(i, j)}*/}
+        {/*          attributesRenderer={attributesRenderer}*/}
+        {/*          cellRenderer={cellRenderer}*/}
+        {/*          valueRenderer={valueRenderer}*/}
+        {/*          dataRenderer={dataRenderer}*/}
+        {/*          valueViewer={valueViewer}*/}
+        {/*          dataEditor={dataEditor}*/}
+        {/*          {...(isEditing*/}
+        {/*            ? {*/}
+        {/*                forceEdit,*/}
+        {/*              }*/}
+        {/*            : {})}*/}
+        {/*        />*/}
+        {/*      );*/}
+        {/*    })}*/}
+        {/*  </RowRenderer>*/}
+        {/*))}*/}
+        {/*</SheetRenderer>*/}
       </span>
     );
   }
