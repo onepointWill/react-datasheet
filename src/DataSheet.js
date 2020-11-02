@@ -648,6 +648,12 @@ export default class DataSheet extends PureComponent {
       overflow,
       data,
       keyFn,
+      pages,
+      isLoading,
+      loadingElem,
+      sorts,
+      filters,
+      onFetchData,
     } = this.props;
     const { forceEdit } = this.state;
     const reactTableData = data.map(row => row.map(cell => cell.value));
@@ -655,8 +661,9 @@ export default class DataSheet extends PureComponent {
       const firstCell = column[0];
       return {
         ...firstCell,
-        Cell: ({ row, index }) => {
-          const i = index;
+        Cell: ({ row, index, columnProps }) => {
+          const j = index;
+          const i = 0;
           const isEditing = this.isEditing(i, j);
           return (
             <DataCell
@@ -669,7 +676,7 @@ export default class DataSheet extends PureComponent {
               }
               row={i}
               col={j}
-              cell={column[index]}
+              cell={column[i]}
               forceEdit={false}
               onMouseDown={this.onMouseDown}
               onMouseOver={this.onMouseOver}
@@ -710,15 +717,15 @@ export default class DataSheet extends PureComponent {
         <ReactTable
           data={reactTableData}
           id="table"
-          pages={this.props.numberOfPages}
+          pages={pages}
           pageSizeOptions={[5, 10, 20, 25, 50]}
           columns={reactTableColumns}
-          loading={this.props.isLoading}
-          loadingText={this.props.loadingElem}
-          defaultSorted={this.props.sorts}
-          defaultFiltered={this.props.filters}
+          loading={isLoading}
+          loadingText={loadingElem}
+          defaultSorted={sorts}
+          defaultFiltered={filters}
           manual
-          onFetchData={this.props.onFetchData}
+          onFetchData={onFetchData}
         />
         {/*<SheetRenderer*/}
         {/*  data={data}*/}
