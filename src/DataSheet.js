@@ -652,12 +652,12 @@ export default class DataSheet extends PureComponent {
     const { forceEdit } = this.state;
     const reactTableData = data.map(row => row.map(cell => cell.value));
     const reactTableColumns = data.map((column, i) => {
+      const firstCell = column[0];
       return {
-        accessor: 'progress',
+        ...firstCell,
         Cell: ({ row, index }) => {
           const j = index;
           const isEditing = this.isEditing(i, j);
-          const firstCell = column[0];
           return (
             <DataCell
               key={
@@ -669,7 +669,7 @@ export default class DataSheet extends PureComponent {
               }
               row={i}
               col={j}
-              cell={row}
+              cell={column[index]}
               forceEdit={false}
               onMouseDown={this.onMouseDown}
               onMouseOver={this.onMouseOver}
