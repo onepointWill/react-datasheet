@@ -669,7 +669,7 @@ export default class DataSheet extends PureComponent {
               }
               row={i}
               col={j}
-              cell={firstCell ? firstCell.cell : null}
+              cell={row}
               forceEdit={false}
               onMouseDown={this.onMouseDown}
               onMouseOver={this.onMouseOver}
