@@ -17,6 +17,7 @@ import {
   DOWN_KEY,
   RIGHT_KEY,
 } from './keys';
+import ReactTable from 'react-table-6/src';
 
 const isEmpty = obj => Object.keys(obj).length === 0;
 
@@ -649,6 +650,47 @@ export default class DataSheet extends PureComponent {
       keyFn,
     } = this.props;
     const { forceEdit } = this.state;
+    const reactTableData = data.map(row => row.map(cell => cell.value));
+    const reactTableColumns = data.map((column, i) => {
+      return {
+        accessor: 'progress',
+        Cell: ({ row, index }) => {
+          const j = index;
+          const isEditing = this.isEditing(i, j);
+          return (
+            <DataCell
+              key={column[0]?.key ? column[0]?.key : `${i}-${j}`}
+              row={i}
+              col={j}
+              cell={column[0]?.Cell}
+              forceEdit={false}
+              onMouseDown={this.onMouseDown}
+              onMouseOver={this.onMouseOver}
+              onDoubleClick={this.onDoubleClick}
+              onContextMenu={this.onContextMenu}
+              onChange={this.onChange}
+              onRevert={this.onRevert}
+              onNavigate={this.handleKeyboardCellMovement}
+              onKey={this.handleKey}
+              selected={this.isSelected(i, j)}
+              editing={isEditing}
+              clearing={this.isClearing(i, j)}
+              attributesRenderer={attributesRenderer}
+              cellRenderer={cellRenderer}
+              valueRenderer={valueRenderer}
+              dataRenderer={dataRenderer}
+              valueViewer={valueViewer}
+              dataEditor={dataEditor}
+              {...(isEditing
+                ? {
+                    forceEdit,
+                  }
+                : {})}
+            />
+          );
+        },
+      };
+    });
     return (
       <span
         ref={r => {
@@ -664,44 +706,57 @@ export default class DataSheet extends PureComponent {
             .filter(a => a)
             .join(' ')}
         >
-          {data.map((row, i) => (
-            <RowRenderer key={keyFn ? keyFn(i) : i} row={i} cells={row}>
-              {row.map((cell, j) => {
-                const isEditing = this.isEditing(i, j);
-                return (
-                  <DataCell
-                    key={cell.key ? cell.key : `${i}-${j}`}
-                    row={i}
-                    col={j}
-                    cell={cell}
-                    forceEdit={false}
-                    onMouseDown={this.onMouseDown}
-                    onMouseOver={this.onMouseOver}
-                    onDoubleClick={this.onDoubleClick}
-                    onContextMenu={this.onContextMenu}
-                    onChange={this.onChange}
-                    onRevert={this.onRevert}
-                    onNavigate={this.handleKeyboardCellMovement}
-                    onKey={this.handleKey}
-                    selected={this.isSelected(i, j)}
-                    editing={isEditing}
-                    clearing={this.isClearing(i, j)}
-                    attributesRenderer={attributesRenderer}
-                    cellRenderer={cellRenderer}
-                    valueRenderer={valueRenderer}
-                    dataRenderer={dataRenderer}
-                    valueViewer={valueViewer}
-                    dataEditor={dataEditor}
-                    {...(isEditing
-                      ? {
-                          forceEdit,
-                        }
-                      : {})}
-                  />
-                );
-              })}
-            </RowRenderer>
-          ))}
+          <ReactTable
+            data={reactTableData}
+            id="table"
+            pages={this.props.numberOfPages}
+            pageSizeOptions={[5, 10, 20, 25, 50]}
+            columns={reactTableColumns}
+            loading={this.props.isLoading}
+            loadingText={this.props.loadingElem}
+            defaultSorted={this.props.sorts}
+            defaultFiltered={this.props.filters}
+            manual
+            onFetchData={this.props.onFetchData}
+          />
+          {/*{data.map((row, i) => (*/}
+          {/*  <RowRenderer key={keyFn ? keyFn(i) : i} row={i} cells={row}>*/}
+          {/*    {row.map((cell, j) => {*/}
+          {/*      const isEditing = this.isEditing(i, j);*/}
+          {/*      return (*/}
+          {/*        <DataCell*/}
+          {/*          key={cell.key ? cell.key : `${i}-${j}`}*/}
+          {/*          row={i}*/}
+          {/*          col={j}*/}
+          {/*          cell={cell}*/}
+          {/*          forceEdit={false}*/}
+          {/*          onMouseDown={this.onMouseDown}*/}
+          {/*          onMouseOver={this.onMouseOver}*/}
+          {/*          onDoubleClick={this.onDoubleClick}*/}
+          {/*          onContextMenu={this.onContextMenu}*/}
+          {/*          onChange={this.onChange}*/}
+          {/*          onRevert={this.onRevert}*/}
+          {/*          onNavigate={this.handleKeyboardCellMovement}*/}
+          {/*          onKey={this.handleKey}*/}
+          {/*          selected={this.isSelected(i, j)}*/}
+          {/*          editing={isEditing}*/}
+          {/*          clearing={this.isClearing(i, j)}*/}
+          {/*          attributesRenderer={attributesRenderer}*/}
+          {/*          cellRenderer={cellRenderer}*/}
+          {/*          valueRenderer={valueRenderer}*/}
+          {/*          dataRenderer={dataRenderer}*/}
+          {/*          valueViewer={valueViewer}*/}
+          {/*          dataEditor={dataEditor}*/}
+          {/*          {...(isEditing*/}
+          {/*            ? {*/}
+          {/*                forceEdit,*/}
+          {/*              }*/}
+          {/*            : {})}*/}
+          {/*        />*/}
+          {/*      );*/}
+          {/*    })}*/}
+          {/*  </RowRenderer>*/}
+          {/*))}*/}
         </SheetRenderer>
       </span>
     );
@@ -739,6 +794,13 @@ DataSheet.propTypes = {
   attributesRenderer: PropTypes.func,
   keyFn: PropTypes.func,
   handleCopy: PropTypes.func,
+
+  onFetchData: PropTypes.func.isRequired,
+  filters: PropTypes.array.isRequired,
+  sorts: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  loadingElem: PropTypes.element.isRequired,
+  numberOfPages: PropTypes.number.isRequired,
 };
 
 DataSheet.defaultProps = {
