@@ -1,10 +1,10 @@
 {
   "name": "react-datasheet",
   "version": "1.4.8",
-  "description": "Excel-like data grid for React",
+  "description": "Excel-like data grid for React, using react tables",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nadbm/react-datasheet.git"
+    "url": "https://github.com/onepointWill/react-datasheet"
   },
   "author": "Nadim Islam",
   "license": "MIT",
@@ -80,8 +80,5 @@
     }
   },
   "main": "lib/index.js",
-  "types": "types/react-datasheet.d.ts",
-  "dependencies": {
-    "react-table-6": "^6.11.0"
-  }
+  "types": "types/react-datasheet.d.ts"
 }

@@ -1,3 +1,4 @@
+import ReactTable from 'react-table-6';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Sheet from './Sheet';
@@ -17,7 +18,6 @@ import {
   DOWN_KEY,
   RIGHT_KEY,
 } from './keys';
-import ReactTable from 'react-table-6/src';
 
 const isEmpty = obj => Object.keys(obj).length === 0;
 
