@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactTable from 'react-table-6';
+import ReactTable from 'react-table';
 import PropTypes from 'prop-types';
 import Sheet from './Sheet';
 import Row from './Row';
