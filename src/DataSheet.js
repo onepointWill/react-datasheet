@@ -657,12 +657,19 @@ export default class DataSheet extends PureComponent {
         Cell: ({ row, index }) => {
           const j = index;
           const isEditing = this.isEditing(i, j);
+          const firstCell = column[0];
           return (
             <DataCell
-              key={column[0]?.key ? column[0]?.key : `${i}-${j}`}
+              key={
+                firstCell
+                  ? firstCell.key
+                    ? column[0].key
+                    : `${i}-${j}`
+                  : `${i}-${j}`
+              }
               row={i}
               col={j}
-              cell={column[0]?.Cell}
+              cell={firstCell ? firstCell.cell : null}
               forceEdit={false}
               onMouseDown={this.onMouseDown}
               onMouseOver={this.onMouseOver}
