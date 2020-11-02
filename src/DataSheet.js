@@ -651,12 +651,12 @@ export default class DataSheet extends PureComponent {
     } = this.props;
     const { forceEdit } = this.state;
     const reactTableData = data.map(row => row.map(cell => cell.value));
-    const reactTableColumns = data.map((column, i) => {
+    const reactTableColumns = data.map((column, j) => {
       const firstCell = column[0];
       return {
         ...firstCell,
         Cell: ({ row, index }) => {
-          const j = index;
+          const i = index;
           const isEditing = this.isEditing(i, j);
           return (
             <DataCell
@@ -707,7 +707,6 @@ export default class DataSheet extends PureComponent {
         className="data-grid-container"
         onKeyDown={this.handleKey}
       >
-        <div>hello</div>
         <ReactTable
           data={reactTableData}
           id="table"
