@@ -664,6 +664,8 @@ export default class DataSheet extends PureComponent {
         Cell: ({ row, index, columnProps }) => {
           const j = index;
           const i = 0;
+          console.log(columnProps);
+          console.log(columnProps);
           const isEditing = this.isEditing(i, j);
           return (
             <DataCell
