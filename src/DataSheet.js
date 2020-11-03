@@ -541,6 +541,7 @@ export default class DataSheet extends PureComponent {
   }
 
   onMouseDown(i, j, e) {
+    console.log('mouse down');
     const isNowEditingSameCell =
       !isEmpty(this.state.editing) &&
       this.state.editing.i === i &&
@@ -647,6 +648,7 @@ export default class DataSheet extends PureComponent {
       className,
       overflow,
       data,
+      columns,
       keyFn,
       pages,
       isLoading,
@@ -656,29 +658,22 @@ export default class DataSheet extends PureComponent {
       onFetchData,
     } = this.props;
     const { forceEdit } = this.state;
-    const reactTableData = data.map(row => row.map(cell => cell.value));
-    const reactTableColumns = data.map((column, j) => {
-      const firstCell = column[0];
+    const reactTableColumns = columns.map((column, i) => {
+      const cell = column;
       return {
-        ...firstCell,
-        Cell: ({ row, index, columnProps }) => {
+        ...cell,
+        Cell: ({ value, index }) => {
           const j = index;
-          const i = 0;
-          console.log(columnProps);
-          console.log(columnProps);
           const isEditing = this.isEditing(i, j);
           return (
             <DataCell
-              key={
-                firstCell
-                  ? firstCell.key
-                    ? firstCell.key
-                    : `${i}-${j}`
-                  : `${i}-${j}`
-              }
+              key={cell ? (cell.key ? cell.key : `${i}-${j}`) : `${i}-${j}`}
               row={i}
               col={j}
-              cell={column[i]}
+              cell={{
+                ...cell,
+                value: value,
+              }}
               forceEdit={false}
               onMouseDown={this.onMouseDown}
               onMouseOver={this.onMouseOver}
@@ -716,71 +711,70 @@ export default class DataSheet extends PureComponent {
         className="data-grid-container"
         onKeyDown={this.handleKey}
       >
-        <ReactTable
-          data={reactTableData}
-          id="table"
-          pages={pages}
-          pageSizeOptions={[5, 10, 20, 25, 50]}
-          columns={reactTableColumns}
-          loading={isLoading}
-          loadingText={loadingElem}
-          defaultSorted={sorts}
-          defaultFiltered={filters}
-          manual
-          onFetchData={onFetchData}
-        />
-        {/*<SheetRenderer*/}
-        {/*  data={data}*/}
-        {/*  className={['data-grid', className, overflow]*/}
-        {/*    .filter(a => a)*/}
-        {/*    .join(' ')}*/}
-        {/*>*/}
-        {/*{data.map((row, i) => (*/}
-        {/*  <RowRenderer key={keyFn ? keyFn(i) : i} row={i} cells={row}>*/}
-        {/*    {row.map((cell, j) => {*/}
-        {/*      const isEditing = this.isEditing(i, j);*/}
-        {/*      return (*/}
-        {/*        <DataCell*/}
-        {/*          key={cell.key ? cell.key : `${i}-${j}`}*/}
-        {/*          row={i}*/}
-        {/*          col={j}*/}
-        {/*          cell={cell}*/}
-        {/*          forceEdit={false}*/}
-        {/*          onMouseDown={this.onMouseDown}*/}
-        {/*          onMouseOver={this.onMouseOver}*/}
-        {/*          onDoubleClick={this.onDoubleClick}*/}
-        {/*          onContextMenu={this.onContextMenu}*/}
-        {/*          onChange={this.onChange}*/}
-        {/*          onRevert={this.onRevert}*/}
-        {/*          onNavigate={this.handleKeyboardCellMovement}*/}
-        {/*          onKey={this.handleKey}*/}
-        {/*          selected={this.isSelected(i, j)}*/}
-        {/*          editing={isEditing}*/}
-        {/*          clearing={this.isClearing(i, j)}*/}
-        {/*          attributesRenderer={attributesRenderer}*/}
-        {/*          cellRenderer={cellRenderer}*/}
-        {/*          valueRenderer={valueRenderer}*/}
-        {/*          dataRenderer={dataRenderer}*/}
-        {/*          valueViewer={valueViewer}*/}
-        {/*          dataEditor={dataEditor}*/}
-        {/*          {...(isEditing*/}
-        {/*            ? {*/}
-        {/*                forceEdit,*/}
-        {/*              }*/}
-        {/*            : {})}*/}
-        {/*        />*/}
-        {/*      );*/}
-        {/*    })}*/}
-        {/*  </RowRenderer>*/}
-        {/*))}*/}
-        {/*</SheetRenderer>*/}
+        <SheetRenderer
+          data={data}
+          className={['data-grid', className, overflow]
+            .filter(a => a)
+            .join(' ')}
+        >
+          <ReactTable
+            data={data}
+            id="table"
+            pages={pages}
+            pageSizeOptions={[5, 10, 20, 25, 50]}
+            columns={reactTableColumns}
+            loading={isLoading}
+            loadingText={loadingElem}
+            defaultSorted={sorts}
+            defaultFiltered={filters}
+            // manual
+            // onFetchData={onFetchData}
+          />
+          {/*{data.map((row, i) => (*/}
+          {/*  <RowRenderer key={keyFn ? keyFn(i) : i} row={i} cells={row}>*/}
+          {/*    {row.map((cell, j) => {*/}
+          {/*      const isEditing = this.isEditing(i, j);*/}
+          {/*      return (*/}
+          {/*        <DataCell*/}
+          {/*          key={cell.key ? cell.key : `${i}-${j}`}*/}
+          {/*          row={i}*/}
+          {/*          col={j}*/}
+          {/*          cell={cell}*/}
+          {/*          forceEdit={false}*/}
+          {/*          onMouseDown={this.onMouseDown}*/}
+          {/*          onMouseOver={this.onMouseOver}*/}
+          {/*          onDoubleClick={this.onDoubleClick}*/}
+          {/*          onContextMenu={this.onContextMenu}*/}
+          {/*          onChange={this.onChange}*/}
+          {/*          onRevert={this.onRevert}*/}
+          {/*          onNavigate={this.handleKeyboardCellMovement}*/}
+          {/*          onKey={this.handleKey}*/}
+          {/*          selected={this.isSelected(i, j)}*/}
+          {/*          editing={isEditing}*/}
+          {/*          clearing={this.isClearing(i, j)}*/}
+          {/*          attributesRenderer={attributesRenderer}*/}
+          {/*          cellRenderer={cellRenderer}*/}
+          {/*          valueRenderer={valueRenderer}*/}
+          {/*          dataRenderer={dataRenderer}*/}
+          {/*          valueViewer={valueViewer}*/}
+          {/*          dataEditor={dataEditor}*/}
+          {/*          {...(isEditing*/}
+          {/*            ? {*/}
+          {/*                forceEdit,*/}
+          {/*              }*/}
+          {/*            : {})}*/}
+          {/*        />*/}
+          {/*      );*/}
+          {/*    })}*/}
+          {/*  </RowRenderer>*/}
+          {/*))}*/}
+        </SheetRenderer>
       </span>
     );
   }
 }
 
 DataSheet.propTypes = {
-  data: PropTypes.array.isRequired,
   className: PropTypes.string,
   disablePageClick: PropTypes.bool,
   overflow: PropTypes.oneOf(['wrap', 'nowrap', 'clip']),
@@ -811,12 +805,14 @@ DataSheet.propTypes = {
   keyFn: PropTypes.func,
   handleCopy: PropTypes.func,
 
+  data: PropTypes.array.isRequired,
+  columns: PropTypes.array.isRequired,
   onFetchData: PropTypes.func.isRequired,
   filters: PropTypes.array.isRequired,
   sorts: PropTypes.array.isRequired,
   isLoading: PropTypes.bool.isRequired,
   loadingElem: PropTypes.element.isRequired,
-  numberOfPages: PropTypes.number.isRequired,
+  pages: PropTypes.number.isRequired,
 };
 
 DataSheet.defaultProps = {
